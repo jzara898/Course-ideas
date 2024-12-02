@@ -43,7 +43,7 @@ staticFileLocation("/public");
         String title = request.queryParams("title");
         // TODO: jcz - This username is tied to the cookie implementation.  Need to fix this.
 
-        CourseIdea courseIdea = new CourseIdea(title, request.cookie("username"));
+        CourseIdea courseIdea = new CourseIdea(request.cookie("username"), title);
         dao.add(courseIdea);
         response.redirect("ideas");
         return null;
