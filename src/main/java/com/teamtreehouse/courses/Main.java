@@ -9,15 +9,14 @@ import spark.template.handlebars.HandlebarsTemplateEngine;
 import java.util.HashMap;
 import java.util.Map;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
+import static spark.Spark.*;
 
 public class Main {
     public static void main(String[] args) {
-
+staticFileLocation("/public");
         CourseIdeaDAO dao = new SimpleCourseIdeaDAO();
 
-        //could switch the simpleDAO for database later
+        //*should switch the simpleDAO for database later
         //simple DAO is for prototyping only -- not to be run live
         //will not survive a server restart.  must switch out for database version
 

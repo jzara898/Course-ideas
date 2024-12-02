@@ -1,11 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Students!</title>
-</head>
-<body>
+{{#partial "content"}}
+
+
 {{#if username}}
     <h1>Welcome {{ username }}!</h1>
 {{ else }}
@@ -20,5 +15,6 @@
     </form>
 {{/if}}
 
-</body>
-</html>
+{{/partial}}
+
+{{> base.hbs}}
