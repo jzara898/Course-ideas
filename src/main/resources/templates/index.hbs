@@ -6,14 +6,19 @@
     <title>Hello Students!</title>
 </head>
 <body>
-<h1>Welcome Students!</h1>
+{{#if username}}
+    <h1>Welcome {{ username }}!</h1>
+{{ else }}
+    <h1>Welcome Students!</h1>
 
-<!-- TODO:jcz add sign-in below -->
+    <!-- TODO:jcz add sign-in below -->
 
-<form action="/sign-in" method="post">
+    <form action="/sign-in" method="post">
 
-    <input type="text" placeholder="What's your username?" name="username">
-<button>Sign in</button>
-</form>
+        <input type="text" placeholder="What's your username?" name="username">
+        <button>Sign in</button>
+    </form>
+{{/if}}
+
 </body>
 </html>
