@@ -49,7 +49,7 @@ staticFileLocation("/public");
         return null;
     }));
 
-
+//list only exists in memory at this time
     }
 
 }
