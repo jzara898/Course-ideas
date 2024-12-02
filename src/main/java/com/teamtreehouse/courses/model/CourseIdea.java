@@ -3,11 +3,11 @@ package com.teamtreehouse.courses.model;
 import java.util.Objects;
 
 //class to store data structues
-public class CourseIdeas {
+public class CourseIdea {
     private String title;
     private String creator;
 
-    public CourseIdeas(String creator, String title) {
+    public CourseIdea(String creator, String title) {
         this.creator = creator;
         this.title = title;
     }
@@ -24,7 +24,7 @@ public class CourseIdeas {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
 
-        CourseIdeas that = (CourseIdeas) o;
+        CourseIdea that = (CourseIdea) o;
         return Objects.equals(title, that.title) && Objects.equals(creator, that.creator);
     }
 

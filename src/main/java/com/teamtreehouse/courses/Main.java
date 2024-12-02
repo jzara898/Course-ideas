@@ -1,6 +1,8 @@
 package com.teamtreehouse.courses;
 
 
+import com.teamtreehouse.courses.model.CourseIdeaDAO;
+import com.teamtreehouse.courses.model.SimpleCourseIdeaDAO;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
@@ -12,6 +14,12 @@ import static spark.Spark.post;
 
 public class Main {
     public static void main(String[] args) {
+
+        CourseIdeaDAO dao = new SimpleCourseIdeaDAO();
+
+        //could switch the simpleDAO for database later
+        //simple DAO is for prototyping only -- not to be run live
+        //will not survive a server restart.  must switch out for database version
 
         get("/", (req, res) -> {
             Map<String, String> model = new HashMap<>();
