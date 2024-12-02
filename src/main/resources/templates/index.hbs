@@ -3,10 +3,11 @@
 
 {{#if username}}
     <h1>Welcome {{ username }}!</h1>
+<p> View <a href="/ideas" > all course ideas </a>.</p>
+
 {{ else }}
     <h1>Welcome Students!</h1>
 
-    <!-- TODO:jcz add sign-in below -->
 
     <form action="/sign-in" method="post">
 

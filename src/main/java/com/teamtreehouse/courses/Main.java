@@ -1,6 +1,7 @@
 package com.teamtreehouse.courses;
 
 
+import com.teamtreehouse.courses.model.CourseIdea;
 import com.teamtreehouse.courses.model.CourseIdeaDAO;
 import com.teamtreehouse.courses.model.SimpleCourseIdeaDAO;
 import spark.ModelAndView;
@@ -32,7 +33,25 @@ staticFileLocation("/public");
             model.put("username", username);
             return new ModelAndView(model,"sign-in.hbs");
         }, new HandlebarsTemplateEngine());
+    get("/ideas", (request, response) -> {
+        Map<String, Object> model = new HashMap<>();
+        model.put("ideas", dao.findAll());
+        return new ModelAndView(model, "ideas.hbs");
+    }, new HandlebarsTemplateEngine());
+
+    post("/ideas", ((request, response) -> {
+        String title = request.queryParams("title");
+        // TODO: jcz - This username is tied to the cookie implementation.  Need to fix this.
+
+        CourseIdea courseIdea = new CourseIdea(title, request.cookie("username"));
+        dao.add(courseIdea);
+        response.redirect("ideas");
+        return null;
+    }));
+
+
     }
+
 }
 /* lambda (functional interface for route object) takes 2 parameters:
 its passed request and response.  And returns Hello World.
