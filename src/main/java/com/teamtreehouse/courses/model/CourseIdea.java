@@ -3,9 +3,7 @@ package com.teamtreehouse.courses.model;
 import com.github.slugify.Slugify;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 //class to store data structues
 public class CourseIdea {
@@ -38,6 +36,10 @@ public class CourseIdea {
 
     public String getSlug() {
         return slug;
+    }
+
+    public List<String> getVoters() {
+        return new ArrayList<>(voters);
     }
 
     public boolean addVoter(String voterUserName) {
