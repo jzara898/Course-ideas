@@ -17,6 +17,23 @@ public class Main {
 staticFileLocation("/public");
         CourseIdeaDAO dao = new SimpleCourseIdeaDAO();
 
+        before((request, response) ->  {
+            if (request.cookie("username") != null) {
+                request.attribute("username", request.cookie("username"));
+
+            }
+                }
+
+
+                );
+
+        before("/ideas", ((request, response) -> {
+    // TODO: jcz - Send message re: redirect.
+    if (request.attribute("username") == null) {
+        response.redirect("/");
+        halt();
+    }
+}));
         //*should switch the simpleDAO for database later
         //simple DAO is for prototyping only -- not to be run live
         //will not survive a server restart.  must switch out for database version
@@ -41,9 +58,8 @@ staticFileLocation("/public");
 
     post("/ideas", ((request, response) -> {
         String title = request.queryParams("title");
-        // TODO: jcz - This username is tied to the cookie implementation.  Need to fix this.
 
-        CourseIdea courseIdea = new CourseIdea(request.cookie("username"), title);
+        CourseIdea courseIdea = new CourseIdea(request.attribute("username"), title);
         dao.add(courseIdea);
         response.redirect("ideas");
         return null;
