@@ -3,6 +3,7 @@ package com.teamtreehouse.courses;
 
 import com.teamtreehouse.courses.model.CourseIdea;
 import com.teamtreehouse.courses.model.CourseIdeaDAO;
+import com.teamtreehouse.courses.model.NotFoundException;
 import com.teamtreehouse.courses.model.SimpleCourseIdeaDAO;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -82,6 +83,15 @@ public class Main {
         }
 
         ));
+
+        exception(NotFoundException.class, ((exception, request, response) -> {
+            response.status(404);
+            HandlebarsTemplateEngine engine = new HandlebarsTemplateEngine();
+            String html = engine.render(new ModelAndView(null, "not-found.hbs"));
+        response.body(html);
+        }
+
+                ));
 //list only exists in memory at this time
     }
 
