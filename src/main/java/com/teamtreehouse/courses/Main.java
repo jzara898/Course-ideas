@@ -34,7 +34,7 @@ public class Main {
         before("/ideas", ((request, response) -> {
 
             if (request.attribute("username") == null) {
-                setFlashMessage("Oopsie, please go sign in first.");
+                setFlashMessage(request,"Oopsie, please go sign in first.");
                 response.redirect("/");
                 halt();
             }
@@ -46,6 +46,7 @@ public class Main {
         get("/", (req, res) -> {
             Map<String, String> model = new HashMap<>();
             model.put("username", req.cookie("username"));
+            model.put("flashMessage", captureFlashMessage(req));
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
         post("/sign-in", (request, response) ->
@@ -86,7 +87,7 @@ public class Main {
             if (added) {
                 setFlashMessage(request, "Thanks for your vote.");
             } else {
-                setFlashMessage(request, "You Already Voted.");
+                setFlashMessage(request, "You already voted.");
             }
             response.redirect("/ideas");
             return null;
