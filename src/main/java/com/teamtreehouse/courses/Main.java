@@ -6,6 +6,7 @@ import com.teamtreehouse.courses.model.CourseIdeaDAO;
 import com.teamtreehouse.courses.model.NotFoundException;
 import com.teamtreehouse.courses.model.SimpleCourseIdeaDAO;
 import spark.ModelAndView;
+import spark.Request;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.util.HashMap;
@@ -14,6 +15,8 @@ import java.util.Map;
 import static spark.Spark.*;
 
 public class Main {
+    private static final String FLASH_MESSAGE_KEY = "flash_message";
+
     public static void main(String[] args) {
         staticFileLocation("/public");
         CourseIdeaDAO dao = new SimpleCourseIdeaDAO();
@@ -29,8 +32,9 @@ public class Main {
         );
 
         before("/ideas", ((request, response) -> {
-            // TODO: jcz - Send message re: redirect.
+
             if (request.attribute("username") == null) {
+                setFlashMessage("Oopsie, please go sign in first.");
                 response.redirect("/");
                 halt();
             }
@@ -55,6 +59,7 @@ public class Main {
         get("/ideas", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("ideas", dao.findAll());
+            model.put("flashMessage", captureFlashMessage(request));
             return new ModelAndView(model, "ideas.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -77,7 +82,12 @@ public class Main {
         post("/ideas/:slug/vote", ((request, response) -> {
 
             CourseIdea idea = dao.findBySlug(request.params("slug"));
-            idea.addVoter(request.attribute("username"));
+            boolean added = idea.addVoter(request.attribute("username"));
+            if (added) {
+                setFlashMessage(request, "Thanks for your vote.");
+            } else {
+                setFlashMessage(request, "You Already Voted.");
+            }
             response.redirect("/ideas");
             return null;
         }
@@ -95,6 +105,27 @@ public class Main {
 //list only exists in memory at this time
     }
 
+    private static void setFlashMessage(Request request, String message) {
+
+request.session().attribute(FLASH_MESSAGE_KEY, message);
+    }
+
+    private static String getFlashMessage(Request request) {
+        if (request.session(false) == null) {
+            return null;
+        }
+    if (!request.session().attributes().contains(FLASH_MESSAGE_KEY)) {
+        return null;
+    }
+    return (String) request.session().attribute(FLASH_MESSAGE_KEY);
+    }
+private static String captureFlashMessage(Request request) {
+        String message = getFlashMessage(request);
+        if (message !=null) {
+            request.session().removeAttribute(FLASH_MESSAGE_KEY);
+        }
+        return message;
+}
 }
 /* lambda (functional interface for route object) takes 2 parameters:
 its passed request and response.  And returns Hello World.
